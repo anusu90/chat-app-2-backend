@@ -1,6 +1,7 @@
 const express = require('express');
 const socketio = require("socket.io");
 const http = require("http");
+require('dotenv').config(path.join(__dirname, ".env"))
 
 const { addUser, removeUser, getUser, getUsersInRoom } = require("./users")
 
@@ -20,7 +21,7 @@ const port = process.env.PORT || 5000
 app.use(router)
 
 app.use(function (req, res, next) {
-    let allowedOrigin = ["http://localhost:3000", "https://keen-kalam-6de5f7.netlify.app", "http://127.0.0.1:5500"]
+    let allowedOrigin = ["http://localhost:3000", "https://keen-kalam-6de5f7.netlify.app"]
     console.log(allowedOrigin.indexOf(req.headers.origin));
     if (allowedOrigin.indexOf(req.headers.origin) !== -1) {
         res.header("Access-Control-Allow-Origin", req.headers.origin)
