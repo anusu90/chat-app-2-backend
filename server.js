@@ -1,27 +1,29 @@
 const express = require('express');
 const socketio = require("socket.io");
 const http = require("http");
+const path = require("path")
 require('dotenv').config(path.join(__dirname, ".env"))
 
 const { addUser, removeUser, getUser, getUsersInRoom } = require("./users")
 
 const router = require("./router");
-const { Socket } = require('dgram');
 
 
 const app = express()
 const server = http.createServer(app)
 const io = socketio(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: process.env.FRONTEND,
     }
 })
+
+console.log(process.env.FRONTEND)
 
 const port = process.env.PORT || 5000
 app.use(router)
 
 app.use(function (req, res, next) {
-    let allowedOrigin = ["http://localhost:3000", "https://keen-kalam-6de5f7.netlify.app"]
+    let allowedOrigin = ["http://localhost:3000", process.env.FRONTEND,]
     console.log(allowedOrigin.indexOf(req.headers.origin));
     if (allowedOrigin.indexOf(req.headers.origin) !== -1) {
         res.header("Access-Control-Allow-Origin", req.headers.origin)
